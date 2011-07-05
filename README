@@ -1,0 +1,39 @@
+SWFVisualizer - SWF File Format Visualization with Flash
+http://rintarou.dyndns.org/swfvisualizer/
+
+The code is under GPL or another optional commercial license if you prefer.
+(Contact: shuho.chou@gmail.com)
+
+Other sources included in lib/* were under their own licenses.
+
+
+
+Try it first
+
+  http://rintarou.dyndns.org/tests/SWFVisualizer.html
+
+
+
+How to build
+
+  1. Install FlashDevelop + Flex 4.0 SDK compiled SWF10 binary
+  2. Open "SWFVisualizer.as3proj" and run it.
+
+
+
+Setup for your own services
+
+  SWFVisualizer should work with my another project(https://github.com/RintarouTW/swfparser).
+  If you want to use swfparser to build your own service, modify Global.as:
+
+    swf2jsonURL : 			"http://rintarou.dyndns.org/tests/swf2json.php?swfURL=",
+    uploadswf2jsonURL :		"http://rintarou.dyndns.org/tests/uploadswf2json.php",
+
+  to the URL of your own services.
+  
+
+
+Patch of other source
+
+  I patched lib/com/adobe/serialization/JSONDecoder.as for ordered key array.
+  If you update the library on your own, remember this patch.

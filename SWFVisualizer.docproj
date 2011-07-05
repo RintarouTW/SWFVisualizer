@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<docProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <pageTitle>SWFVisualizer</pageTitle>
+  <classPaths>C:\Users\Rintarou\Documents\SWFVisualizer-0.3\src;C:\Users\Rintarou\Documents\SWFVisualizer-0.3\lib\org</classPaths>
+  <sourcesList>org.hasseg.externalMouseWheel.ExternalMouseWheelSupport</sourcesList>
+  <outputDirectory>C:\Users\Rintarou\Documents\SWFVisualizer-0.3\doc</outputDirectory>
+  <activeCompiler>1</activeCompiler>
+  <extraOptions>-source-path ./src/ -strict=false -package ui "User interface components" -package swf "SWF data structure visualization" -package visual "Basic JSON data visualization, such as Table, Cell, Link, etc..."</extraOptions>
+</docProject>

@@ -1,0 +1,353 @@
+﻿<html>
+<head>	
+	<title>SWFVisualizer - SWF Format Visualization</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="language" content="en" />
+	<meta name="description" content="SWFVisualizer" />
+	<meta name="keywords" content="SWF,Visualizer,Visualization,Flash,HTML5,Canvas" />
+	
+	<link type="text/css" href="css/ui-darkness/jquery-ui-1.8.2.custom.css" rel="stylesheet" />	
+	<script type="text/javascript" src="js/jquery-1.4.2.min.js"></script> 
+	<script type="text/javascript" src="js/jquery-ui-1.8.2.custom.min.js"></script>
+	<script type="text/javascript" src="./extMouseWheel.js"></script>
+	
+	<!-- Google Analytics -->
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-1860703-4']);
+		_gaq.push(['_trackPageview']);
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+
+	
+	<script type="text/javascript">
+	    var codeStr;
+		
+	    $(function() {
+			$("#accordion").accordion();
+			$("#tabs").tabs();
+			
+		});
+
+		function popup(msg) {
+			$("#dialog").html(msg);
+			$("#dialog").dialog();
+		}
+		
+		function drawCanvas(canvasStr, w, h) {
+			var canvas = document.getElementById('myCanvas');
+			var gradient;
+			//canvas.width = canvas.width; // clear the context by set width (according W3C spec. Firefox and Safari works well, Chrome doesn't)
+			
+			// workaround to prevent Chrome's bug
+			canvas.width = canvas.width + 1;
+			canvas.width = canvas.width - 1;
+			
+			if (canvas.getContext){
+				var ctx = canvas.getContext('2d');
+				eval(canvasStr);
+			}
+			
+			codeStr = "function draw(canvasID) {\nvar ctx = document.getElementById(canvasID).getContext('2d');\nvar gradient;\n";
+			codeStr += "ctx.scale(1, 1); /* You may like to scale the size */\n" + canvasStr + "}\n";
+			//$("#myCanvasCode").html(codeStr);
+			var codeBox = document.getElementById('myCanvasCode');
+			codeBox.value = codeStr;
+			$("#bytesOfCode").html(codeStr.length + "bytes");
+			$("#tabs").tabs( "select" , 1);			
+		}
+		
+		function execCode() {			
+			var canvas = document.getElementById('myCanvas');
+			canvas.width = canvas.width + 1;
+			canvas.width = canvas.width - 1;
+			
+			var codeBox = document.getElementById('myCanvasCode');
+			codeStr = codeBox.value + "draw('myCanvas');";
+			eval(codeStr);
+		}
+		
+	</script>
+	<style>
+	pre {font: normal 12px verdana, arial, helvetica, sans-serif; }
+	</style>
+</head>
+<body bgcolor="#000000">
+<table border="0" style="position:absolute;top:0px;">
+	<!-- <tr><th colspan="2"><div class="ui-corner-top ui-state-active">SWFVisualizer 0.2.8</div></th></tr> -->
+	<tr valign="top"><td>
+		<div style="width:1024px;height:768px;border: 1px solid #666666;" id="flashContainerDiv">
+		<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=10,0,0,0" width="1024" height="768" id="SWFVisualizer" align="middle">
+		<param name="allowScriptAccess" value="sameDomain" />
+		<param name="allowFullScreen" value="false" />
+		<param name="movie" value="SWFVisualizer.swf" />
+		<param name="loop" value="false" />
+		<param name="menu" value="false" />
+		<param name="quality" value="medium" />
+		<param name="devicefont" value="true" />
+		<param name="bgcolor" value="#151515" />
+		<embed src="SWFVisualizer.swf" loop="false" wmode="gpu" menu="false" quality="high" devicefont="true" bgcolor="#0b0b0b" width="1024" height="768" name="SWFVisualizer" align="middle" allowScriptAccess="sameDomain" allowFullScreen="true" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />
+	</object>
+	</div>
+
+	</td>
+	<td>
+		<!-- Tabs --> 
+		<div id="tabs" style="width:500px;"> 
+			<ul> 
+				<li><a href="#tabs-1">Introduction</a></li> 
+				<li><a href="#tabs-2">Output</a></li> 
+				<li><a href="#tabs-3">News</a></li> 
+				<li><a href="#tabs-4">About</a></li> 				
+			</ul> 
+			<div id="tabs-1">
+				<div class="ui-state-default ui-corner-top">Features</div>
+				<div>
+					<ul>					
+					<li>Visualization of SWF Format</li>
+					<li>JSON Data Visualization</li>
+					<li>Convert SWF Shape to JavaScript Canvas Code. (<i>Click on <b>SHAPEWITHSTYLE</b></i>)</li>
+					<li>Decompile SWF to JSON format. (SWF Parser written from scratch with C++)</li>
+					<li>Shape is redrawn progressively by click on it.(Show the drawing sequence clearly.)</li>
+					<li>Good usability (parsing on the fly and zooming cache)</li>
+					<li>Track into and track back</li>
+					</ul>
+				</div>
+				<br/>
+				<div class="ui-state-default ui-corner-top">Usage</div>
+				<div>
+					<ul>
+						<li>Zooming: <i>Mouse Scroll/Key Up and Key Down</i><br></li>
+						<li>Drag: <i>Mouse Drag</i><br></li>
+						<li>Detail: <i>Mouse Over</i><br/></li>
+						<li>Generate Canvas Code: <i>Click on <b>DefineShape</b> or <b>SHAPEWITHSTYLE</b></i></li>
+						<li>Progressively redraw vectors: <i>Click on <b>SHAPE</b></i></li>
+						<li>Tracking : Left Key and Right Key</li>
+					</ul>
+				</div>
+			</div> 
+			<div id="tabs-2">
+				<div style="width:450px;overflow:auto;">
+				<div class="ui-state-default ui-corner-top">Canvas Drawing Preview</div>
+				<canvas id="myCanvas" width="450" height="350" style="background-color:#333333"></canvas>
+				Right click to <i>"Save Image As"</i>.
+				</div>
+				<br/>
+				<div class="ui-state-default ui-corner-top">Generated JavaScript Canvas Code (<span id="bytesOfCode">0 Bytes</span>) <input type="button" value="Run" onclick="javascript:execCode();"/> </div>
+				<textarea id="myCanvasCode" style="width:450px;height:260px;overflow:auto;"></textarea>
+			</div> 
+			<div id="tabs-3">
+				<div id="accordion" style="height:600px;text-color:#ffffff;">
+					<h3><a href="#">SWFVisualizer 0.3.3</a></h3>
+					<div><pre>
+Released on 2011/01/??.
+Updates:
+- Bug Fixes:
+  - swfparser
+   - (TODO) ScaleX, ScaleY of a MATRIX should be FIXED(16.16) point number.
+   - (TODO) MultTerms of CXFORM should be FIXED8 point number.
+   - (TODO) support DefineText (TEXTRECORD)
+  - SWFVisualizer
+   - reset line style without effecting the following fill drawing.
+   -
+					</pre></div>
+					<h3><a href="#">SWFVisualizer 0.3.2</a></h3>
+					<div><pre>
+Released on 2010/08/23.
+Updates:
+- swfparser
+  - DoAction Tag support. (ActionPush values are dumped.)
+  - JSON double type support.
+  - JSON string support control characters(0x00 - 0x1f) and non-ascii characters(0x7f - 0xff)
+  - SWFHeader is seperated.
+					</pre></div>
+					<h3><a href="#">SWFVisualizer 0.3.1</a></h3>
+					<div><pre>
+Released on 2010/08/05.
+Updates:
+- Fixed line drawing bug.
+- Draw closed paths. Known drawing bugs are all fixed.
+- Generated canvas code are optimized.
+- Run button: Run the canvas code (allow modification) and check the result.
+- Workaround to prevent Chrome's canvas bug.
+- SWF parser code refine for gcc 4.2.1.
+					</pre></div>
+					<h3><a href="#">SWFVisualizer 0.3</a></h3>
+					<div><pre>
+Released on 2010/07/26.
+Updates:
+- Support FillType of LINESTYLE2 with lineGradientStyle().
+  (HTML5: canvas.stokeStyle = gradient.)
+- Support LINESTYLE and LINESTYLE2 preview.
+- MetaData Tag support (server side).
+- Colorize with shadow, gradient and alpha with more details.
+- Extend the zooming cache to (fullScreenWidth, fullScreenHeight) but cost more memory.
+- Improved full screen scaling.
+- Documentation with ASDoc.
+					</pre></div>
+					<h3><a href="#">SWFVisualizer 0.2.9</a></h3>
+					<div><pre>
+Released on 2010/07/20.
+Updates:
+- Uploading progress.
+- Support trace back function. (press left key on the focused object.)
+- Support trace into function. (press right key or click on the highlighted text.)
+- Support Zoom In/Out by up and down key.
+- Information Filter:
+  Hide ShapeRecord by default. (Manually enabled with the checkbox of "Show ShapeRecord").
+					</pre></div>
+					<h3><a href="#">SWFVisualizer 0.2.8</a></h3>
+					<div><pre>
+Released on 2010/07/17.
+Updates:
+- Auto translate the generated canvas code to the 1st quadrant. 
+- Improved usability.
+  1. Progressively parsing. (Operate while parsing.)
+  2. Improved zooming performance. (Scale cache with bitmap like iPhone OS.)
+					</pre></div>
+					<h3><a href="#">SWFVisualizer 0.2.7</a></h3>
+					<div><pre>
+Released on 2010/07/13.
+Updates:
+- Tool tip shows if Zoom is less than 30%.
+- Bug fixed of LINESTYLE is not rendered.
+- Code Refactored.
+- Optimized parsing performance, support more than 5000 objects(tiger.swf).
+					</pre></div>
+					<h3><a href="#">SWFVisualizer 0.2.6</a></h3>
+					<div><pre>
+Released on 2010/07/10.
+Updates:
+- Support JSON Data Visualization.
+- Upload *.SWF file support 
+  (size should be less than 10MB).
+- Style configuration support. 
+  (Color and font did matter a lot.)
+- Memory usage.
+  (Every load would do garbage collection first)
+- Reduce CPU usage. (default set to 30 FPS.)
+- Zooming on mouse cursor.
+
+Bug Fix:
+- SWF parser bug fixed while parsing DoABC tag.
+- Gradient Fill preview matrix correction.
+					</pre></div>
+					<h3><a href="#">SWFVisualizer 0.2.5</a></h3>
+					<div><pre>
+Released on 2010/07/09.
+Updates:
+- Translate the preview drawing to the 1st quadrant.
+- Enhanced visual contrast.
+- Shape is redrawn progressively by click on it. 
+  (Show the drawing sequence clearly.)
+- Full Screen support.
+- Arrow of the vectors are refined.
+- Text quality are refined.
+- JSON object type info key string changed to "__TYPE_INFO__" 
+  from "__COMMENT__"
+					</pre></div>
+					<h3><a href="#">SWFVisualizer 0.2.4</a></h3>
+					<div><pre>
+Released on 2010/07/06.
+Updates:
+- UI performance optimization. (much faster now.)
+- Visualization with fun.
+
+Fixed:
+- Chrome 5.0.375.99 failed on Canvas gradient rendering.
+					</pre></div>
+					<h3><a href="#">SWFVisualizer 0.2.3</a></h3>
+					<div><pre>
+Released on 2010/07/03.
+Updates:
+- Generate JavaScript Canvas Code from SHAPEWITHSTYLE
+- User interface refinement.
+- Code refinement and less memory print.
+					
+					</pre></div>
+					<h3><a href="#">SWFVisualizer 0.2.2</a></h3>
+					<div><pre>
+Released on 2010/06/30.
+Updates:
+- Support left fill style (FillStyle0).
+  Use a faster algorithms to generate the paths without finding 
+  connected paths. And much lesser number of paths was genertated 
+  than Smokescreen.
+- Bug fixed: Rotated gradients support.
+					</pre></div>
+
+					<h3><a href="#">SWFVisualizer 0.2.1</a></h3>
+					<div><pre>
+Released on 2010/06/24.
+Updates:
+
+SHAPE will be drawn without fill styles and line styles, 
+it shows how the shapes are composited with vectors.
+ - Square box : MoveTo records, indicate the start of a path.
+ - Arrow: Indicate the direction of a edge record.
+
+SWF to JSON Parser Bug Fix : 
+read General Line's DeltaX and DeltaY with unsigned 
+bits read function. (Now use signed bits read function.)
+					</pre></div>
+
+					<h3><a href="#">SWFVisualizer 0.2</a></h3>
+					<div><pre>
+Released on 2010/06/22.
+Updates:
+
+- Draw GRADIENT, Gradient Fill, GRADRECORD when mouse over.
+- SetBackgroundColor support
+					</pre></div>
+
+					<h3><a href="#">SWFVisualizer 0.1</a></h3>
+					<div><pre>
+Released on 2010/06/19.
+Updates:
+
+- Draw SHAPEWITHSTYLE, Solid Color, STRAIGHTEDGERECORD, 
+  CURVEDEDGERECORD when mouse over.
+- FPS Meter added
+- Use TweenLite for light weight tweening
+- FlashDevelop + Flex 4.0 SDK compiled SWF10 binary
+HTML Version is <a href="http://rintarou.dyndns.org/tests/swfparser.php">here</a>.<br>
+Old Version (SWF9) is <a href="http://rintarou.dyndns.org/tests/SWFVisualizer-20100610.html">here</a>
+					</pre></div>
+				</div> <!-- End of Accordion -->			
+			</div> <!-- End of Tab-3 -->
+			
+			<div id="tabs-4">
+				<div>
+					<div  class="ui-state-default ui-corner-top">Contact</div>
+					Author: Rintarou Chou<br/>
+					Email: <a href="mailto:shuho.chou@gmail.com">shuho.chou@gmail.com</a><br/>
+					Blog: <a href="http://rintarou.dyndns.org">http://rintarou.dyndns.org</a><br/>
+					<br/>
+					<div class="ui-state-default ui-corner-top">Donation</div>
+					<div>
+					I have no job but still need a cup of coffee.<br/>
+					我沒法外出工作, 請我喝杯咖啡吧!<br/>
+					仕事がありませんけど、コーヒーも飲みたい。
+					<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+<input type="hidden" name="cmd" value="_s-xclick">
+<input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----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-----END PKCS7-----
+">
+<input type="image" src="https://www.paypal.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+<img alt="" border="0" src="https://www.paypal.com/zh_HK/i/scr/pixel.gif" width="1" height="1">
+</form>
+</div>
+				</div>
+			</div>
+	
+		</div> 	<!-- End of Tabs -->
+		
+	</td></tr>
+</table>
+
+<div id="dialog" style="visible:false;"></div>
+</body>
+</html>
